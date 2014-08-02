@@ -13,7 +13,9 @@ def main():
 
     maidDetails = soup.find(id="maid_detail")
 
-    print maidDetails
+    for detailDiv in maidDetails.stripped_strings:
+        print repr(detailDiv)
+    #print maidDetails
 
 if __name__ == "__main__":
     main()
