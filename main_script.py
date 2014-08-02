@@ -8,14 +8,16 @@ def makeSoup(URL):
     soup = BeautifulSoup(html, "lxml")
     return soup;
 
-def main():
-    soup = makeSoup(EX_URL)
-
+def drinkSoup(soup):
     maidDetails = soup.find(id="maid_detail")
 
     for detailDiv in maidDetails.stripped_strings:
         print repr(detailDiv)
     #print maidDetails
+
+def main():
+    soup = makeSoup(EX_URL)
+    drinkSoup(soup)
 
 if __name__ == "__main__":
     main()
