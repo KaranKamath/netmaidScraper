@@ -15,9 +15,9 @@ def drinkSoup(soup):
     maidDict = {}
 
     for childDiv in maidDetails.find_all("div", "title"):
-        maidDict[childDiv.string] = "somevalue"
+        maidDict[childDiv.text] = childDiv.find_next_sibling("div").text
 
-    pprint(maidDict.keys());
+    pprint(maidDict);
 
 def main():
     soup = makeSoup(EX_URL)
