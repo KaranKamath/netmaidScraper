@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
+from pprint import pprint
 
 EX_URL = "http://netmaid.com.sg/maids/272739"
 
@@ -11,9 +12,12 @@ def makeSoup(URL):
 def drinkSoup(soup):
     maidDetails = soup.find(id="maid_detail")
 
-    for detailDiv in maidDetails.stripped_strings:
-        print repr(detailDiv)
-    #print maidDetails
+    maidDict = {}
+
+    for childDiv in maidDetails.find_all("div", "title"):
+        maidDict[childDiv.string] = "somevalue"
+
+    pprint(maidDict.keys());
 
 def main():
     soup = makeSoup(EX_URL)
