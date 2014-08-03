@@ -27,6 +27,10 @@ def drinkSoup(soup):
             tableRows = childDiv.find_next_sibling(True).find_all(non_empty_td_with_field)
             for i in range(0, len(tableRows), 2):
                 maidDict[tableRows[i].text] = tableRows[i+1].img["src"][-5]
+        elif "Other Information" in fieldName:
+            tableRows = childDiv.find_next_sibling(True).find_all("td")
+            for i in range(0, len(tableRows), 2):
+                maidDict[tableRows[i].text] = "Yes" if "tick" in tableRows[i+1].img["src"] else "No"
         else:
             maidDict[fieldName] = childDiv.find_next_sibling("div").text
 
