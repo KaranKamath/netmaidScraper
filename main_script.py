@@ -34,7 +34,6 @@ def drinkSoup(soup):
             languageDivs = childDiv.find_parent().find_all(not_a_title_class)
             langVal = ""
             for i in range(0, len(languageDivs)):
-                #Seperator choice made here
                 langVal += languageDivs[i].text + ","
             maidDict[fieldName] = langVal[:-1]
         elif "Other Information" in fieldName:
