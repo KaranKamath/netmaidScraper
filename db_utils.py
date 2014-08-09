@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 
 def addToMaidsDb(maidDetails):
     conn = sqlite3.connect('scraper.db')
@@ -78,7 +79,7 @@ def addToMaidsDb(maidDetails):
                             maidDetails[u'As Of'],
                             None));
     except sqlite3.IntegrityError,e:
-       c.execute('''UPDATE maids SET as_of_date=? WHERE urlID=?;''', (maidDetails[u'As Of'], maidDetails[u'ID']))
+       c.execute('''UPDATE maids SET as_of_date=? WHERE urlID=? AND expired_date IS NULL;''', (maidDetails[u'As Of'], maidDetails[u'ID']))
     c.execute("SELECT * FROM maids WHERE urlID=?", (maidDetails[u'ID'],))
     print c.fetchall()
     c.close()
@@ -87,3 +88,15 @@ def addToMaidsDb(maidDetails):
 
 def expireInMaidsDb(maidId):
     print "Expiring"
+
+    conn = sqlite3.connect('scraper.db')
+    c = conn.cursor()
+
+    c.execute('''UPDATE maids SET expired_date=? WHERE urlID=?;''', (str(datetime.datetime.now()), maidId))
+    c.execute('''SELECT * FROM maids WHERE urlID=?''', (maidId,))
+
+    print c.fetchall()
+
+    conn.commit()
+    c.close()
+    conn.close()

@@ -86,7 +86,7 @@ def main():
 
     if soup != None:
         maidDetails = drinkSoup(soup, str(maidId))
-        pprint(maidDetails.keys())
+        #pprint(maidDetails.keys())
         addToMaidsDb(maidDetails)
     else:
         expireInMaidsDb(str(maidId))
