@@ -37,3 +37,7 @@ c.execute('''CREATE TABLE maids(
                 other_works_off_days_for_compensation TEXT,
                 working_experience TEXT,
                 img_path TEXT)''')
+
+conn.commit()
+
+conn.close()
