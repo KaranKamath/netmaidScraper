@@ -3,8 +3,10 @@
 
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
+from urllib import urlretrieve
 from pprint import pprint
 from db_utils import *
+import datetime
 
 BASE_URL = "http://netmaid.com.sg/maids/"
 
@@ -20,7 +22,7 @@ def makeSoup(URL_ID):
     soup = BeautifulSoup(html, "lxml")
     return soup;
 
-def drinkSoup(soup):
+def drinkSoup(soup, maidId):
     maidDetails = soup.find(id="maid_detail")
 
     maidDict = {}
@@ -57,13 +59,21 @@ def drinkSoup(soup):
         else:
             maidDict[fieldName] = childDiv.find_next_sibling("div").text
 
+    maidDict[u"As Of"] = str(datetime.datetime.now())
+    maidDict[u"ID"] = maidId
+    maidDict[u"Image Path"] = extractImage(maidDetails, maidId)
+
     pprint(maidDict)
     return maidDict
+
+def extractImage(maidDetails, imageName):
+    localPath = "./photos/" + imageName
+    urlretrieve(maidDetails.div.img["src"], localPath)
 
 def main():
     maid_ID = 273159
     soup = makeSoup(str(maid_ID))
-    maidDetails = drinkSoup(soup)
+    maidDetails = drinkSoup(soup, str(maid_ID))
     addToMaidsDb(maidDetails)
 
 if __name__ == "__main__":
