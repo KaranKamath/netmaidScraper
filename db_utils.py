@@ -7,3 +7,6 @@ def addToMaidsDb(maidDetails):
     c.close()
     conn.commit()
     conn.close()
+
+def expireInMaidsDb(maidId):
+    print "Expiring"

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from bs4 import BeautifulSoup
-from urllib2 import urlopen
+from urllib2 import urlopen, URLError
 from urllib import urlretrieve
 from pprint import pprint
 from db_utils import *
@@ -19,9 +19,13 @@ def not_a_title_class(tag):
 
 def makeSoup(URL_ID):
     URL = BASE_URL + URL_ID
-    html = urlopen(URL).read()
-    soup = BeautifulSoup(html, "lxml")
-    return soup;
+    try:
+        html = urlopen(URL).read()
+        soup = BeautifulSoup(html, "lxml")
+        return soup;
+    except URLError, e:
+        if e.code == 404:
+            return None
 
 def drinkSoup(soup, maidId):
     maidDetails = soup.find(id="maid_detail")
@@ -64,7 +68,7 @@ def drinkSoup(soup, maidId):
     maidDict[u"ID"] = maidId
     maidDict[u"Image Path"] = extractImage(maidDetails, maidId)
 
-    pprint(maidDict)
+    #pprint(maidDict)
     return maidDict
 
 def extractImage(maidDetails, imageName):
@@ -76,10 +80,14 @@ def extractImage(maidDetails, imageName):
     return localPath
 
 def main():
-    maid_ID = 273159
-    soup = makeSoup(str(maid_ID))
-    maidDetails = drinkSoup(soup, str(maid_ID))
-    addToMaidsDb(maidDetails)
+    maidId = 273165                    #273159
+    soup = makeSoup(str(maidId))
+
+    if soup != None:
+        maidDetails = drinkSoup(soup, str(maidId))
+        addToMaidsDb(maidDetails)
+    else:
+        expireInMaidsDb(str(maidId))
 
 if __name__ == "__main__":
     main()
