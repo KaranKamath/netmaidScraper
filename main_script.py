@@ -60,7 +60,7 @@ def drinkSoup(soup, maidId):
             workExVal = ""
             for i in range(0, len(tableRows), 2):
                workExVal += tableRows[i].text + '-' + tableRows[i+1].text + ','
-            maidDict["Working Experience"] = workExVal[:-1]
+            maidDict[fieldName] = workExVal[:-1]
         else:
             maidDict[fieldName] = childDiv.find_next_sibling("div").text
 
@@ -80,11 +80,13 @@ def extractImage(maidDetails, imageName):
     return localPath
 
 def main():
-    maidId = 273165                    #273159
+    #maidId = 273165
+    maidId = 273159
     soup = makeSoup(str(maidId))
 
     if soup != None:
         maidDetails = drinkSoup(soup, str(maidId))
+        pprint(maidDetails.keys())
         addToMaidsDb(maidDetails)
     else:
         expireInMaidsDb(str(maidId))
