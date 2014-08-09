@@ -10,6 +10,9 @@ EX_URL = "http://netmaid.com.sg/maids/273159"    #272739
 def non_empty_td_with_field(tag):
     return tag.name == "td" and unicode(tag.string) != u"  -"
 
+def not_a_title_class(tag):
+    return tag.name == 'div' and tag.get('class') == None
+
 def makeSoup(URL):
     html = urlopen(URL).read()
     soup = BeautifulSoup(html, "lxml")
@@ -27,6 +30,12 @@ def drinkSoup(soup):
             tableRows = childDiv.find_next_sibling(True).find_all(non_empty_td_with_field)
             for i in range(0, len(tableRows), 2):
                 maidDict[tableRows[i].text] = tableRows[i+1].img["src"][-5]
+        elif "Language Skill" in fieldName:
+            languageDivs = childDiv.find_parent().find_all(not_a_title_class)
+            langVal = ""
+            for i in range(0, len(languageDivs)):
+                langVal += languageDivs[i].text + ","
+            maidDict[fieldName] = langVal[:-1]
         elif "Other Information" in fieldName:
             tableRows = childDiv.find_next_sibling(True).find_all("td")
             for i in range(0, len(tableRows), 2):
