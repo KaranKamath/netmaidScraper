@@ -36,7 +36,7 @@ c.execute('''CREATE TABLE maids(
                 other_washes_car TEXT,
                 other_works_off_days_for_compensation TEXT,
                 working_experience TEXT,
-                img_path TEXT)''')
+                img_path TEXT);''')
 
 conn.commit()
 

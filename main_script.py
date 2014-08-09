@@ -4,8 +4,9 @@
 from bs4 import BeautifulSoup
 from urllib2 import urlopen
 from pprint import pprint
+from db_utils import *
 
-EX_URL = "http://netmaid.com.sg/maids/273159"    #272739
+BASE_URL = "http://netmaid.com.sg/maids/"
 
 def non_empty_td_with_field(tag):
     return tag.name == "td" and unicode(tag.string) != u"  -"
@@ -13,7 +14,8 @@ def non_empty_td_with_field(tag):
 def not_a_title_class(tag):
     return tag.name == 'div' and tag.get('class') == None
 
-def makeSoup(URL):
+def makeSoup(URL_ID):
+    URL = BASE_URL + URL_ID
     html = urlopen(URL).read()
     soup = BeautifulSoup(html, "lxml")
     return soup;
@@ -55,11 +57,14 @@ def drinkSoup(soup):
         else:
             maidDict[fieldName] = childDiv.find_next_sibling("div").text
 
-    pprint(maidDict);
+    pprint(maidDict)
+    return maidDict
 
 def main():
-    soup = makeSoup(EX_URL)
-    drinkSoup(soup)
+    maid_ID = 273159
+    soup = makeSoup(str(maid_ID))
+    maidDetails = drinkSoup(soup)
+    addToMaidsDb(maidDetails)
 
 if __name__ == "__main__":
     main()
