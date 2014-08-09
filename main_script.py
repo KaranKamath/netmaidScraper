@@ -9,6 +9,41 @@ from db_utils import *
 import datetime
 import os
 
+KEY_LIST = [u'Able to do gardening work?',
+            u'Cooking',
+            u'Religion',
+            u'General Housework',
+            u'Language Skill',
+            u'Siblings',
+            u'Type',
+            u'Willing to wash car?',
+            u'Care for Infant/Children',
+            u'Working Experience',
+            u'Date of Birth',
+            u'Able to handle pork?',
+            u'Care for Elderly',
+            u'Able to handle beef?',
+            u'Able to do simple sewing?',
+            u'Nationality',
+            u'Base Salary',
+            u'Willing to work on off days with compensation?',
+            u'Care for Disabled',
+            u'Maid Name',
+            u'Able to care dog/cat?',
+            u'Ref. Code',
+            u'Rest Day Preference',
+            u'ID',
+            u'Weight',
+            u'Image Path',
+            u'Height',
+            u'Marital Status',
+            u'Place of Birth',
+            u'Maid Agency',
+            u'Able to eat pork?',
+            u'Education',
+            u'Children',
+            u'As Of']
+
 BASE_URL = "http://netmaid.com.sg/maids/"
 
 def non_empty_td_with_field(tag):
@@ -81,11 +116,14 @@ def extractImage(maidDetails, imageName):
 
 def main():
     #maidId = 273165
-    maidId = 273159
+    maidId = 273160
     soup = makeSoup(str(maidId))
 
     if soup != None:
         maidDetails = drinkSoup(soup, str(maidId))
+        for keyName in KEY_LIST:
+            if keyName not in maidDetails.keys():
+                maidDetails[keyName] = None
         #pprint(maidDetails.keys())
         addToMaidsDb(maidDetails)
     else:
