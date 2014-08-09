@@ -116,7 +116,7 @@ def extractImage(maidDetails, imageName):
 
 def main():
     #maidId = 273165
-    maidId = 273160
+    maidId = 273161
     soup = makeSoup(str(maidId))
 
     if soup != None:
