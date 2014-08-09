@@ -7,6 +7,7 @@ from urllib import urlretrieve
 from pprint import pprint
 from db_utils import *
 import datetime
+import os
 
 BASE_URL = "http://netmaid.com.sg/maids/"
 
@@ -67,8 +68,12 @@ def drinkSoup(soup, maidId):
     return maidDict
 
 def extractImage(maidDetails, imageName):
-    localPath = "./photos/" + imageName
+    directory = "photos"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    localPath = "./" + directory + "/" + imageName + ".jpg"
     urlretrieve(maidDetails.div.img["src"], localPath)
+    return localPath
 
 def main():
     maid_ID = 273159
