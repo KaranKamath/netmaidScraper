@@ -121,8 +121,6 @@ def getMaidIntroduction(soup):
 
     introductionString = introductionString.strip()
 
-    print introductionString
-
     return introductionString
 
 def extractImage(maidDetails, imageName):

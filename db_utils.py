@@ -38,12 +38,14 @@ def addToMaidsDb(maidDetails):
                         other_washes_car,
                         other_works_off_days_for_compensation,
                         working_experience,
+                        maid_introduction,
                         img_path,
+                        init_date,
                         as_of_date,
                         expired_date)
                         values(
-                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''',
+                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
+                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''',
                         (maidDetails[u'ID'],
                             maidDetails[u'Ref. Code'],
                             maidDetails[u'Type'],
@@ -75,7 +77,9 @@ def addToMaidsDb(maidDetails):
                             maidDetails[u'Willing to wash car?'],
                             maidDetails[u'Willing to work on off days with compensation?'],
                             maidDetails[u'Working Experience'],
+                            maidDetails[u'Maid Introduction'],
                             maidDetails[u'Image Path'],
+                            maidDetails[u'As Of'],
                             maidDetails[u'As Of'],
                             None));
     except sqlite3.IntegrityError,e:

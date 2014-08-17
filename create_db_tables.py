@@ -36,7 +36,9 @@ c.execute('''CREATE TABLE maids(
                 other_washes_car TEXT,
                 other_works_off_days_for_compensation TEXT,
                 working_experience TEXT,
+                maid_introduction TEXT,
                 img_path TEXT,
+                init_date TEXT,
                 as_of_date TEXT,
                 expired_date TEXT)''');
 
