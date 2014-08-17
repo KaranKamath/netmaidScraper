@@ -52,6 +52,9 @@ def non_empty_td_with_field(tag):
 def not_a_title_class(tag):
     return tag.name == 'div' and tag.get('class') == None
 
+def div_preceding_intro(tag):
+    return tag.name == 'div' and tag.string == u'Maid Introduction'
+
 def makeSoup(URL_ID):
     URL = BASE_URL + URL_ID
     try:
@@ -102,9 +105,25 @@ def drinkSoup(soup, maidId):
     maidDict[u"As Of"] = str(datetime.datetime.now())
     maidDict[u"ID"] = maidId
     maidDict[u"Image Path"] = extractImage(maidDetails, maidId)
+    maidDict[u"Maid Introduction"] = getMaidIntroduction(soup)
 
     #pprint(maidDict)
     return maidDict
+
+def getMaidIntroduction(soup):
+    previousDiv = soup.find(div_preceding_intro)
+    introductionString = ""
+
+    introDiv = previousDiv.find_next_sibling('div')
+
+    for text in introDiv.stripped_strings:
+        introductionString += '\n' + text
+
+    introductionString = introductionString.strip()
+
+    print introductionString
+
+    return introductionString
 
 def extractImage(maidDetails, imageName):
     directory = "photos"
