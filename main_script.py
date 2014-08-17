@@ -8,6 +8,7 @@ from pprint import pprint
 from db_utils import *
 import datetime
 import os
+import sys
 
 KEY_LIST = [u'Able to do gardening work?',
             u'Cooking',
@@ -62,8 +63,15 @@ def makeSoup(URL_ID):
         soup = BeautifulSoup(html, "lxml")
         return soup;
     except URLError, e:
-        if e.code == 404:
-            return None
+        try:
+            if e.code == 404:
+                return None
+        except:
+            print "Something went wrong"
+            print e
+            print sys.exc_info()[0]
+            print "Check Internet Settings"
+            sys.exit()
 
 def drinkSoup(soup, maidId):
     maidDetails = soup.find(id="maid_detail")
