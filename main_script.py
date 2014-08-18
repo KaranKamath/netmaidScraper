@@ -9,6 +9,10 @@ from db_utils import *
 import datetime
 import os
 import sys
+import time
+import random
+
+log_name = ""
 
 KEY_LIST = [u'Able to do gardening work?',
             u'Cooking',
@@ -48,7 +52,7 @@ KEY_LIST = [u'Able to do gardening work?',
 BASE_URL = "http://netmaid.com.sg/maids/"
 
 def non_empty_td_with_field(tag):
-    return tag.name == "td" and unicode(tag.string) != u"  -"
+    return tag.name == "td" and (u"  " not in unicode(tag.string))
 
 def not_a_title_class(tag):
     return tag.name == 'div' and tag.get('class') == None
@@ -59,10 +63,16 @@ def div_preceding_intro(tag):
 def makeSoup(URL_ID):
     URL = BASE_URL + URL_ID
     try:
-        html = urlopen(URL).read()
+        openUrl = urlopen(URL)
+
+        log(URL, openUrl.getcode())
+
+        html = openUrl.read()
         soup = BeautifulSoup(html, "lxml")
         return soup;
     except URLError, e:
+        log_error(e)
+
         try:
             if e.code == 404:
                 return None
@@ -72,6 +82,17 @@ def makeSoup(URL_ID):
             print sys.exc_info()[0]
             print "Check Internet Settings"
             sys.exit()
+
+def log_error(e, URL):
+    with open("./logs/errors.txt", "a") as errorFile:
+        errorFile.write(str(datetime.datetime.now()) + "\t" + str(URL) + "\n" + str(e) + "\n")
+
+def log(url, code):
+    if not os.path.exists("logs"):
+        os.makedirs("logs")
+
+    with open(("./logs/" + log_name), "a") as logFile:
+        logFile.write(str(datetime.datetime.now()) + "\t" + str(code) + "\t" + url + "\n")
 
 def drinkSoup(soup, maidId):
     maidDetails = soup.find(id="maid_detail")
@@ -129,7 +150,7 @@ def getMaidIntroduction(soup):
 
     introductionString = introductionString.strip()
 
-    return introductionString
+    return unicode(introductionString)
 
 def extractImage(maidDetails, imageName):
     directory = "photos"
@@ -139,9 +160,7 @@ def extractImage(maidDetails, imageName):
     urlretrieve(maidDetails.div.img["src"], localPath)
     return localPath
 
-def main():
-    #maidId = 273165
-    maidId = 273161
+def orderSoup(maidId):
     soup = makeSoup(str(maidId))
 
     if soup != None:
@@ -153,6 +172,25 @@ def main():
         addToMaidsDb(maidDetails)
     else:
         expireInMaidsDb(str(maidId))
+
+def main():
+    #maidId = 221550
+    #maidId = 273161
+    maidId = 273159
+    global log_name
+    log_name = "logfile - " + datetime.datetime.now().strftime("%d %B, %X") + ".txt"
+
+    #orderSoup(maidId)
+    while True:
+        try:
+            print maidId, "\n"
+            orderSoup(maidId)
+            time.sleep(4 + random.uniform(-3, 3))
+            maidId = maidId + 1
+        except:
+            log_error(sys.exc_info()[0], maidId)
+            maidId = maidId + 1
+            time.sleep(3 + random.uniform(-2, 2))
 
 if __name__ == "__main__":
     main()
