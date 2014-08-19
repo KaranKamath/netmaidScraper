@@ -175,8 +175,8 @@ def orderSoup(maidId):
 
 def main():
     #maidId = 221550
-    #maidId = 273161
-    maidId = 273159
+    #maidId = 278913
+    maidId = 238647
     global log_name
     log_name = "logfile - " + datetime.datetime.now().strftime("%d %B, %X") + ".txt"
 
@@ -185,12 +185,12 @@ def main():
         try:
             print maidId, "\n"
             orderSoup(maidId)
-            time.sleep(4 + random.uniform(-3, 3))
+            time.sleep(3 + random.uniform(-2, 2))
             maidId = maidId + 1
         except:
             log_error(sys.exc_info()[0], maidId)
             maidId = maidId + 1
-            time.sleep(3 + random.uniform(-2, 2))
+            time.sleep(2 + random.uniform(-1, 1))
 
 if __name__ == "__main__":
     main()
