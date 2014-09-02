@@ -2,3 +2,8 @@ photos/
 scraper.db
 logs/
 backup/
+*.db
+*.pyc
+*.csv
+*.jpg
+*.png
