@@ -11,6 +11,7 @@ import os
 import sys
 import time
 import random
+import config
 
 log_name = ""
 
@@ -174,23 +175,24 @@ def orderSoup(maidId):
         expireInMaidsDb(str(maidId))
 
 def main():
-    #maidId = 221550
+    #279238
+    #maidId = 221000
     #maidId = 278913
-    maidId = 238647
+    maidId = config.start_maid_id
     global log_name
     log_name = "logfile - " + datetime.datetime.now().strftime("%d %B, %X") + ".txt"
 
     #orderSoup(maidId)
-    while True:
+    while maidId < config.end_maid_id:
         try:
             print maidId, "\n"
             orderSoup(maidId)
-            time.sleep(3 + random.uniform(-2, 2))
+            time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
             maidId = maidId + 1
         except:
             log_error(sys.exc_info()[0], maidId)
             maidId = maidId + 1
-            time.sleep(2 + random.uniform(-1, 1))
+            time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
 
 if __name__ == "__main__":
     main()
