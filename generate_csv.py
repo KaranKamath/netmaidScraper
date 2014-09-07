@@ -1,5 +1,6 @@
 import csv
 import sqlite3
+from datetime import datetime
 
 conn = sqlite3.connect('scraper.db')
 
@@ -9,7 +10,9 @@ c.execute('''SELECT * FROM maids''')
 
 row = c.fetchone()
 
-with open('output.csv', 'wb') as f:
+strdate = datetime.now().strftime("%d %B, %X")
+
+with open('output-'+ strdate + '.csv', 'wb') as f:
     csv_out = csv.writer(f, dialect='excel')
 
     while row:
