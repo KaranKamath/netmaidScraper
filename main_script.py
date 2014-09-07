@@ -182,17 +182,27 @@ def main():
     global log_name
     log_name = "logfile - " + datetime.datetime.now().strftime("%d %B, %X") + ".txt"
 
-    #orderSoup(maidId)
-    while maidId < config.end_maid_id:
-        try:
-            print maidId, "\n"
-            orderSoup(maidId)
-            time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
-            maidId = maidId + 1
-        except:
-            log_error(sys.exc_info()[0], maidId)
-            maidId = maidId + 1
-            time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
+    if config.only_verify_existing:
+        for maidId in getPresentUrlIds():
+            try:
+                print maidId, "\n"
+                orderSoup(maidId)
+                time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
+            except:
+                log_error(sys.exc_info()[0], maidId)
+                time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
+    else:
+        #orderSoup(maidId)
+        while maidId < config.end_maid_id:
+            try:
+                print maidId, "\n"
+                orderSoup(maidId)
+                time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
+                maidId = maidId + 1
+            except:
+                log_error(sys.exc_info()[0], maidId)
+                maidId = maidId + 1
+                time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
 
 if __name__ == "__main__":
     main()

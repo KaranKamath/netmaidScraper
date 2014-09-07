@@ -104,3 +104,18 @@ def expireInMaidsDb(maidId):
     conn.commit()
     c.close()
     conn.close()
+
+def getPresentUrlIds():
+    conn = sqlite3.connect('scraper.db')
+    c = conn.cursor()
+
+    c.execute('''SELECT urlId FROM maids''')
+
+    urls = c.fetchall()
+    urls_to_return = [url[0] for url in urls]
+
+    c.close()
+    conn.close()
+
+    return urls_to_return
+
