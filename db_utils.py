@@ -109,7 +109,7 @@ def getPresentUrlIds():
     conn = sqlite3.connect('scraper.db')
     c = conn.cursor()
 
-    c.execute('''SELECT urlId FROM maids''')
+    c.execute('''SELECT urlId FROM maids WHERE expired_date IS NULL''')
 
     urls = c.fetchall()
     urls_to_return = [url[0] for url in urls]

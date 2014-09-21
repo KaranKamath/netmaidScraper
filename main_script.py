@@ -72,11 +72,16 @@ def makeSoup(URL_ID):
         soup = BeautifulSoup(html, "lxml")
         return soup;
     except URLError, e:
-        log_error(e)
+        log_error(e, URL_ID)
 
         try:
             if e.code == 404:
+                print "Entry Not Found"
                 return None
+            else:
+                print "Error"
+                print e
+                print sys.exc_info()[0]
         except:
             print "Something went wrong"
             print e
@@ -188,8 +193,11 @@ def main():
                 print maidId, "\n"
                 orderSoup(maidId)
                 time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
-            except:
+            except Exception, e:
                 log_error(sys.exc_info()[0], maidId)
+                print e
+                print sys.exc_info()[0]
+                print maidId
                 time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
     else:
         #orderSoup(maidId)

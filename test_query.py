@@ -4,7 +4,11 @@ conn = sqlite3.connect('scraper.db')
 
 c = conn.cursor()
 
-c.execute('''SELECT urlId FROM maids''')
+c.execute('''SELECT COUNT(urlId) FROM maids''')
+
+print c.fetchall()
+
+c.execute('''SELECT COUNT(urlId) FROM maids WHERE expired_date IS NOT NULL''')
 
 print c.fetchall()
 
