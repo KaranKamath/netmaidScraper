@@ -1,4 +1,5 @@
 import sqlite3
+from db_utils import *
 
 conn = sqlite3.connect('scraper.db')
 
@@ -15,3 +16,5 @@ print c.fetchall()
 conn.commit()
 
 conn.close()
+
+print getLastUrlId()

@@ -179,38 +179,49 @@ def orderSoup(maidId):
     else:
         expireInMaidsDb(str(maidId))
 
+def checkNewJob():
+    maidId = config.start_maid_id
+        #orderSoup(maidId)
+    while maidId < config.end_maid_id:
+        try:
+            print maidId, "\n"
+            orderSoup(maidId)
+            time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
+            maidId = maidId + 1
+        except:
+            log_error(sys.exc_info()[0], maidId)
+            maidId = maidId + 1
+            time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
+
+def checkExistingOnly():
+    for maidId in getPresentUrlIds():
+        try:
+             print maidId, "\n"
+             orderSoup(maidId)
+             time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
+        except Exception, e:
+             log_error(sys.exc_info()[0], maidId)
+             print e
+             print sys.exc_info()[0]
+             print maidId
+             time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
+
+    if config.follow_on:
+        config.start_maid_id = getLastUrlId() + 1
+        config.end_maid_id = config.start_maid_id + config.follow_on_count
+        checkNewJob()
+
 def main():
     #279238
     #maidId = 221000
     #maidId = 278913
-    maidId = config.start_maid_id
     global log_name
     log_name = "logfile - " + datetime.datetime.now().strftime("%d %B, %X") + ".txt"
 
     if config.only_verify_existing:
-        for maidId in getPresentUrlIds():
-            try:
-                print maidId, "\n"
-                orderSoup(maidId)
-                time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
-            except Exception, e:
-                log_error(sys.exc_info()[0], maidId)
-                print e
-                print sys.exc_info()[0]
-                print maidId
-                time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
+        checkExistingOnly()
     else:
-        #orderSoup(maidId)
-        while maidId < config.end_maid_id:
-            try:
-                print maidId, "\n"
-                orderSoup(maidId)
-                time.sleep(config.fixed_delay + random.uniform(-config.offset, config.offset))
-                maidId = maidId + 1
-            except:
-                log_error(sys.exc_info()[0], maidId)
-                maidId = maidId + 1
-                time.sleep(config.fail_delay + random.uniform(-config.fail_offset, config.fail_offset))
+        checkNewJob()
 
 if __name__ == "__main__":
     main()

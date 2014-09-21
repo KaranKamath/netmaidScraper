@@ -119,3 +119,14 @@ def getPresentUrlIds():
 
     return urls_to_return
 
+def getLastUrlId():
+    conn = sqlite3.connect('scraper.db')
+    c = conn.cursor()
+
+    c.execute('''SELECT MAX(urlId) FROM maids''')
+
+    url = c.fetchone()
+    c.close()
+    conn.close()
+
+    return url[0]

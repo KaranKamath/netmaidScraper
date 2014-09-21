@@ -3,6 +3,8 @@ end_maid_id = 300000
 
 #This will disregard start and end parameters and only scrape what is already in the db
 only_verify_existing = True
+follow_on = True
+follow_on_count = 10
 
 #Edit delays with caution
 #Delays after successful scrapes
