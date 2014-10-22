@@ -7,6 +7,7 @@ c = conn.cursor()
 c.execute('''CREATE TABLE maids(
                 urlID INTEGER PRIMARY KEY,
                 ref_code TEXT,
+                name TEXT,
                 type TEXT,
                 base_salary TEXT,
                 rest_day_preference TEXT,
@@ -42,6 +43,6 @@ c.execute('''CREATE TABLE maids(
                 as_of_date TEXT,
                 expired_date TEXT)''');
 
-conn.commit()
 
+conn.commit()
 conn.close()

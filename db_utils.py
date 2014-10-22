@@ -9,6 +9,7 @@ def addToMaidsDb(maidDetails):
         c.execute('''INSERT INTO maids(
                         urlID,
                         ref_code,
+                        name,
                         type,
                         base_salary,
                         rest_day_preference,
@@ -44,10 +45,11 @@ def addToMaidsDb(maidDetails):
                         as_of_date,
                         expired_date)
                         values(
-                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
+                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
                         ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''',
                         (maidDetails[u'ID'],
                             maidDetails[u'Ref. Code'],
+                            maidDetails[u'Maid Name'],
                             maidDetails[u'Type'],
                             maidDetails[u'Base Salary'],
                             maidDetails[u'Rest Day Preference'],

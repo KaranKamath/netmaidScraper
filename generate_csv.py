@@ -17,6 +17,7 @@ with open('output-'+ strdate + '.csv', 'wb') as f:
     header_list = [
             "urlID",
             "Reference Code",
+            "Name",
             "Type",
             "Base Salary",
             "Rest Day Preference",

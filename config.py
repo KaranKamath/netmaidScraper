@@ -2,7 +2,7 @@ start_maid_id = 281772
 end_maid_id = 300000
 
 #This will disregard start and end parameters and only scrape what is already in the db
-only_verify_existing = True
+only_verify_existing = False
 follow_on = True
 follow_on_count = 10
 
